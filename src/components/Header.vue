@@ -1,0 +1,110 @@
+<template>
+  <header class="header">
+    <div class="header__logo">
+      <router-link to="/" class="header__logo_link">
+        <svg viewBox="0 0 78 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M9.17 17.002H.962V15.71H9.17v1.292Zm8.127 0H9.089V15.71h8.208v1.292ZM18.755 14V.434h3.078v11.191h5.035V14h-8.113Zm19.172-5.206c0 .861-.114 1.628-.342 2.299-.215.671-.532 1.241-.95 1.71a4.102 4.102 0 0 1-1.539 1.045c-.595.228-1.267.342-2.014.342a5.374 5.374 0 0 1-1.938-.342 4.314 4.314 0 0 1-1.539-1.045c-.418-.469-.747-1.039-.988-1.71-.228-.671-.342-1.438-.342-2.299 0-1.153.196-2.122.59-2.907.392-.798.95-1.406 1.671-1.824.722-.418 1.59-.627 2.603-.627.937 0 1.76.209 2.47.627.722.418 1.286 1.026 1.691 1.824.418.785.627 1.754.627 2.907Zm-6.555 0c0 .684.057 1.26.171 1.729.127.456.317.804.57 1.045.266.228.602.342 1.007.342.418 0 .747-.114.988-.342.253-.24.437-.589.551-1.045.114-.469.171-1.045.171-1.729 0-.684-.057-1.254-.17-1.71-.115-.456-.305-.798-.57-1.026-.254-.228-.584-.342-.989-.342-.62 0-1.064.26-1.33.779-.266.507-.399 1.273-.399 2.299ZM43.15 3.436c.646 0 1.19.127 1.634.38.456.253.83.633 1.121 1.14h.076l.228-1.33h2.603v10.393c0 .988-.19 1.818-.57 2.489-.367.671-.925 1.178-1.672 1.52-.747.355-1.69.532-2.83.532-.735 0-1.407-.044-2.015-.133a7.45 7.45 0 0 1-1.729-.475v-2.261c.406.177.798.323 1.178.437a6.53 6.53 0 0 0 1.197.266c.418.063.868.095 1.35.095.696 0 1.209-.196 1.538-.589.342-.393.513-.982.513-1.767v-.209c0-.215.007-.437.02-.665.025-.228.05-.43.075-.608h-.095c-.279.545-.64.937-1.083 1.178-.43.24-.963.361-1.596.361-1.102 0-1.982-.469-2.64-1.406-.647-.95-.97-2.267-.97-3.952 0-1.14.152-2.109.456-2.907.304-.81.728-1.425 1.273-1.843a3.08 3.08 0 0 1 1.938-.646Zm1.064 2.299c-.367 0-.671.12-.912.361-.24.228-.424.576-.55 1.045-.115.456-.172 1.032-.172 1.729 0 1.039.133 1.818.4 2.337.278.507.702.76 1.272.76.304 0 .564-.044.78-.133a1.25 1.25 0 0 0 .55-.475c.14-.228.24-.52.304-.874.076-.355.114-.785.114-1.292v-.342c0-.747-.057-1.349-.17-1.805-.115-.456-.305-.785-.57-.988-.254-.215-.602-.323-1.046-.323Zm16.314 3.059c0 .861-.114 1.628-.342 2.299-.216.671-.532 1.241-.95 1.71a4.102 4.102 0 0 1-1.54 1.045c-.595.228-1.266.342-2.013.342a5.374 5.374 0 0 1-1.938-.342 4.314 4.314 0 0 1-1.54-1.045c-.417-.469-.747-1.039-.987-1.71-.228-.671-.342-1.438-.342-2.299 0-1.153.196-2.122.589-2.907.392-.798.95-1.406 1.672-1.824.722-.418 1.59-.627 2.603-.627.937 0 1.76.209 2.47.627.722.418 1.285 1.026 1.69 1.824.419.785.628 1.754.628 2.907Zm-6.555 0c0 .684.057 1.26.17 1.729.127.456.317.804.57 1.045.267.228.602.342 1.008.342.418 0 .747-.114.988-.342.253-.24.437-.589.55-1.045.115-.469.172-1.045.172-1.729 0-.684-.057-1.254-.171-1.71-.114-.456-.304-.798-.57-1.026-.254-.228-.583-.342-.988-.342-.621 0-1.064.26-1.33.779-.266.507-.4 1.273-.4 2.299Zm15.5 8.208h-8.207V15.71h8.208v1.292Zm8.128 0h-8.208V15.71H77.6v1.292Z"
+            fill="#100F39"
+          />
+        </svg>
+      </router-link>
+    </div>
+    <div v-if="isLoggedIn" class="header__cta">
+      <button type="button" class="header__cta__logout" @click="logoutUser">
+        Logout
+      </button>
+    </div>
+    <div v-else class="header__cta">
+      <p class="header__cta__auth">
+        <span>{{ state.ctaText }}</span>
+        <router-link :to="state.ctaUrl" class="header__cta__auth__link">{{
+          state.ctaAnchorText
+        }}</router-link>
+      </p>
+    </div>
+  </header>
+</template>
+
+<script>
+import { watch, ref, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { deriveHeaderState } from '../utils'
+import { useStore } from 'vuex'
+
+export default {
+  name: 'AppHeader',
+  setup() {
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+    const state = ref(deriveHeaderState(route.name))
+
+    const isLoggedIn = computed(() => store.state.isLoggedIn)
+    const logoutUser = () => store.commit('logout', router)
+
+    watch(route, (newRoute) => {
+      state.value = deriveHeaderState(newRoute.name)
+      store.commit('clearFormError')
+
+      if (newRoute.name === 'home' && !isLoggedIn.value) {
+        router.push('/login')
+      }
+
+      if (
+        (newRoute.name === 'login' || newRoute.name === 'signup') &&
+        isLoggedIn.value
+      ) {
+        router.push('/')
+      }
+    })
+
+    return {
+      state,
+      isLoggedIn,
+      logoutUser
+    }
+  }
+}
+</script>
+
+<style scoped>
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+.header__logo {
+  width: 78px;
+}
+
+.header__cta__auth {
+  font-weight: 600;
+}
+
+.header__cta__auth__link {
+  display: inline;
+  margin-left: 5px;
+  color: #322df0;
+}
+.header__cta__logout {
+  border: none;
+  background: none;
+  cursor: pointer;
+  opacity: 0.7;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 1s;
+}
+
+.header__cta__logout:hover {
+  opacity: 1;
+}
+
+.header__cta__logout:focus {
+  outline: none;
+}
+</style>
