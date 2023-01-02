@@ -125,13 +125,14 @@ export default {
 
     const resetFieldError = (event) => {
       const { id: name } = event.target
-      errors.value = { ...errors.value, [name]: '', form: '' }
+      errors.value = { ...errors.value, [name]: '' }
+      store.commit('clearFormError')
     }
 
     const validateField = (event) => {
       const { id: name, value } = event.target
       const error = getInputError(name, value)
-      errors.value = { ...errors.value, [name]: error, form: '' }
+      errors.value = { ...errors.value, [name]: error }
     }
 
     const signUpWithEmail = async () => {
