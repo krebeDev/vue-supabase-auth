@@ -1,6 +1,7 @@
 # vue-supabase-auth
 
 This is a authentication flow implemented with Vue.js and Supabase.
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9a87c98e-b403-429d-9249-3d2b039e0378/deploy-status)](https://app.netlify.com/sites/vue-supabase-auth/deploys)
 
 ## Project Setup
