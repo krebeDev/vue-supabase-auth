@@ -70,7 +70,7 @@ import { NON_MEMBER_QUESTION } from '../utils/constants'
 import './../assets/auth.css'
 
 export default {
-  name: 'LoginForm',
+  name: 'SignInForm',
   setup() {
     const form = ref({
       email: '',
