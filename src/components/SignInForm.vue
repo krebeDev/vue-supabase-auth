@@ -86,6 +86,7 @@ export default {
     const resetFieldError = (event) => {
       const { id: name } = event.target
       errors.value = { ...errors.value, [name]: '' }
+      store.commit('clearFormError')
     }
 
     const validateField = (event) => {
